@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Budget Tracker Pro</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0d0d0d;
+    color: #fff;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+  }
+
+  h1 {
+    text-align: center;
+    color: #00e676;
+  }
+
+  .summary {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+  }
+
+  .card {
+    flex: 1;
+    margin: 5px;
+    padding: 15px;
+    background: #1e1e1e;
+    border-radius: 10px;
+    text-align: center;
+  }
+
+  .income { color: #00e676; }
+  .expense { color: #ff5252; }
+  .balance { color: #ffd740; }
+
+  form {
+    display: grid;
+    gap: 10px;
+    background: #1a1a1a;
+    padding: 15px;
+    border-radius: 10px;
+  }
+
+  input, select, button {
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+  }
+
+  button {
+    background: #00e676;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .filters {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+  }
+
+  .filters button {
+    flex: 1;
+    margin: 3px;
+    background: #2a2a2a;
+    color: white;
+  }
+
+  .filters button.active {
+    background: #00e676;
+    color: black;
+  }
+
+  .list {
+    margin-top: 20px;
+  }
+
+  .item {
+    background: #1e1e1e;
+    margin: 10px 0;
+    padding: 10px;
+    border-left: 4px solid #00e676;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .item.expense {
+    border-left-color: #ff5252;
+  }
+
+  .delete {
+    background: #ff5252;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    color: white;
+    border-radius: 5px;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>💰 Budget Tracker Pro</h1>
+
+  <!-- SUMMARY -->
+  <div class="summary">
+    <div class="card income">Income<br><span id="income">0</span></div>
+    <div class="card expense">Expense<br><span id="expense">0</span></div>
+    <div class="card balance">Balance<br><span id="balance">0</span></div>
+  </div>
+
+  <!-- FORM -->
+  <form id="form">
+    <input type="text" id="desc" placeholder="Description" required />
+    <input type="number" id="amount" placeholder="Amount" required />
+    <select id="type">
+      <option value="income">Income</option>
+      <option value="expense">Expense</option>
+    </select>
+    <button type="submit">Add Transaction</button>
+  </form>
+
+  <!-- FILTERS -->
+  <div class="filters">
+    <button onclick="setFilter('all')" class="active">All</button>
+    <button onclick="setFilter('income')">Income</button>
+    <button onclick="setFilter('expense')">Expense</button>
+  </div>
+
+  <!-- LIST -->
+  <div class="list" id="list"></div>
+
+</div>
+
+<script>
+let transactions = JSON.parse(localStorage.getItem("tx")) || [];
+let filter = "all";
+
+const form = document.getElementById("form");
+const list = document.getElementById("list");
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const tx = {
+    id: Date.now(),
+    desc: document.getElementById("desc").value,
+    amount: +document.getElementById("amount").value,
+    type: document.getElementById("type").value
+  };
+
+  transactions.push(tx);
+  save();
+  render();
+  form.reset();
+});
+
+function save() {
+  localStorage.setItem("tx", JSON.stringify(transactions));
+}
+
+function deleteTx(id) {
+  transactions = transactions.filter(t => t.id !== id);
+  save();
+  render();
+}
+
+function setFilter(f) {
+  filter = f;
+  document.querySelectorAll(".filters button").forEach(b => b.classList.remove("active"));
+  event.target.classList.add("active");
+  render();
+}
+
+function render() {
+  list.innerHTML = "";
+
+  let filtered = transactions.filter(t => {
+    return filter === "all" ? true : t.type === filter;
+  });
+
+  let income = 0, expense = 0;
+
+  filtered.forEach(t => {
+    if (t.type === "income") income += t.amount;
+    else expense += t.amount;
+
+    const div = document.createElement("div");
+    div.className = "item " + t.type;
+
+    div.innerHTML = `
+      <span>${t.desc} - R${t.amount}</span>
+      <button class="delete" onclick="deleteTx(${t.id})">X</button>
+    `;
+
+    list.appendChild(div);
+  });
+
+  document.getElementById("income").innerText = income;
+  document.getElementById("expense").innerText = expense;
+  document.getElementById("balance").innerText = income - expense;
+}
+
+render();
+</script>
+
+</body>
+  </html>
