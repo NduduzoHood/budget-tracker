@@ -1,6 +1,9 @@
-# Budget Tracker
-A personal budget tracker built with HTML, CSS and JavaScript.
-Track income and expenses in South African Rands.
+##This project demonstrates:
+- Frontend development (HTML, CSS, JS)
+- State management using localStorage
+- Dynamic DOM manipulation
+- Basic financial tracking logic
+- UI/UX design principles
 
 ## Features
 - Add income and expense transactions
