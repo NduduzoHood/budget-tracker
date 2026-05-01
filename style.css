@@ -1,0 +1,159 @@
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: "Segoe UI", sans-serif;
+    background: radial-gradient(circle at top, #111 0%, #0a0a0a 100%);
+    color: #fff;
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 850px;
+    margin: auto;
+    padding: 25px;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+    color: #00e676;
+    letter-spacing: 1px;
+  }
+
+  /* SUMMARY CARDS */
+  .summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+  }
+
+  .card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    transition: 0.3s;
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(0, 230, 118, 0.4);
+  }
+
+  .income { color: #00e676; }
+  .expense { color: #ff5252; }
+  .balance { color: #ffd740; }
+
+  /* FORM */
+  form {
+    display: grid;
+    gap: 12px;
+    background: rgba(255,255,255,0.04);
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  input, select {
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #1b1b1b;
+    color: #fff;
+    outline: none;
+    transition: 0.2s;
+  }
+
+  input:focus, select:focus {
+    border: 1px solid #00e676;
+  }
+
+  button {
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, #00e676, #00c853);
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  button:hover {
+    transform: scale(1.02);
+  }
+
+  /* FILTERS */
+  .filters {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+  }
+
+  .filters button {
+    flex: 1;
+    background: #1f1f1f;
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .filters button.active {
+    background: #00e676;
+    color: #000;
+  }
+
+  /* LIST */
+  .list {
+    display: grid;
+    gap: 12px;
+  }
+
+  .item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.05);
+    border-left: 4px solid #00e676;
+    transition: 0.2s;
+  }
+
+  .item:hover {
+    transform: scale(1.01);
+  }
+
+  .item.expense {
+    border-left-color: #ff5252;
+  }
+
+  .delete {
+    background: #ff5252;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: white;
+    font-size: 0.8rem;
+  }
+
+  /* MOBILE */
+  @media (max-width: 600px) {
+    .summary {
+      grid-template-columns: 1fr;
+    }
+
+    .filters {
+      flex-direction: column;
+    }
+  }
+</style>
